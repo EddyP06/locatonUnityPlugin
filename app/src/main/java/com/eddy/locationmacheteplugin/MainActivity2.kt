@@ -1,10 +1,11 @@
 package com.eddy.locationmacheteplugin
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import com.eddy.locationmacheteplugin.data.repository.LocalConfigRepositoryImpl
-import com.eddy.locationmacheteplugin.service.LocationTrackingWorker
+import com.eddy.locationmacheteplugin.service.LocationTrackingService
 
 class MainActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,11 +15,13 @@ class MainActivity2 : AppCompatActivity() {
         val config = LocalConfigRepositoryImpl(filesDir).invoke()
 
         findViewById<Button>(R.id.button).setOnClickListener {
-            LocationTrackingWorker.start(this, config)
+            Intent(this, LocationTrackingService::class.java).also { intent ->
+                startService(intent)
+            }
         }
 
         findViewById<Button>(R.id.button2).setOnClickListener {
-            LocationTrackingWorker.stop()
+            LocationTrackingService.stopService(this)
         }
     }
 }
